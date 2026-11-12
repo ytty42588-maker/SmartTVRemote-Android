@@ -31,7 +31,7 @@ jobs:
       - name: Extract Android ZIP
         run: |
           mkdir -p extracted
-          unzip -q SmartTVRemote-Android.zip -d extracted
+          unzip -q tvremoteapp.zip -d extracted
 
       - name: Fix Dadb imports and version
         run: |
