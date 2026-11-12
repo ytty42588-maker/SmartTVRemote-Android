@@ -1,10 +1,7 @@
-
 name: Build Android APK
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
     branches: [ "main" ]
   workflow_dispatch:
 
@@ -35,6 +32,13 @@ jobs:
         run: |
           mkdir -p extracted
           unzip -q SmartTVRemote-Android.zip -d extracted
+
+      - name: Fix Dadb imports and version
+        run: |
+          find extracted -name MainActivity.kt -exec sed -i 's/import dev\.mobile\.dadb\./import dadb./' {} +
+          find extracted -name build.gradle.kts -path '*app*' -exec sed -i 's/dadb:1.2.10/dadb:1.2.7/' {} +
+          grep -rn "import dadb" extracted
+          grep -rn "dadb:" extracted --include=build.gradle.kts
 
       - name: Build APK
         run: |
